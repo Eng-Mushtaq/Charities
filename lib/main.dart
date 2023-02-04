@@ -1,4 +1,4 @@
-
+import 'package:charities/modules/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +10,7 @@ import 'helpers/bindings.dart';
 import 'modules/homePage.dart';
 import 'modules/itemsPage.dart';
 import 'modules/onboarding.dart';
+import 'modules/orderDetials.dart';
 import 'modules/orderInfoPage.dart';
 
 import 'modules/profile/profile_screen.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home:  const OnBoarding(),
+      home: const OnBoarding(),
     );
   }
 }

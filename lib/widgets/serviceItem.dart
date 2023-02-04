@@ -6,11 +6,8 @@ import 'package:get/get.dart';
 import '../modules/constants/theme.dart';
 
 class ServiceItem extends StatelessWidget {
-  const ServiceItem({
-    Key? key,
-    required this.size,
-    this.service
-  }) : super(key: key);
+  const ServiceItem({Key? key, required this.size, this.service})
+      : super(key: key);
 
   final Size size;
   final Service? service;
@@ -20,25 +17,32 @@ class ServiceItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
-        onTap: (() => Get.to(() =>  ItemsPage(itemsList: service!.productsList!,))),
+        onTap: (() => Get.to(() => ItemsPage(
+              itemsList: service!.productsList!,
+              title: service!.name,
+            ))),
         child: Container(
           margin: const EdgeInsets.all(5),
           width: size.width * 0.25,
           // color: Colors.greenAccent,
           decoration: BoxDecoration(
-              color: const Color.fromARGB(250, 249, 221, 221),
+              color: Colors.grey[200],
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
-              border: Border.all(color: Colors.pink, width: 0.7)),
+              border: Border.all(color: backGroundColor, width: 0.7)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image.asset(
-                'assets/images/alber.png',
+                // 'assets/images/alber.png',
+                service!.logoUrl!,
                 height: size.height * 0.1,
               ),
-               Text(service!.name!)
+              Text(
+                service!.name!,
+                style: subTitleTheme.copyWith(fontSize: 16),
+              )
               // const Text('ملابس')
             ],
           ),

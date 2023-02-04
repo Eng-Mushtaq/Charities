@@ -6,12 +6,9 @@ import 'package:get/get.dart';
 import '../widgets/textFormField.dart';
 import 'constants/theme.dart';
 
-class SignUp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _SignUpState();
-}
+class SignUp extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
 
-class _SignUpState extends State<SignUp> {
   bool pass = true;
   @override
   Widget build(BuildContext context) {
@@ -52,107 +49,117 @@ class _SignUpState extends State<SignUp> {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('انشاء حساب جديد',
-                textAlign: TextAlign.center, style: titleTheme),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('انشاء حساب جديد',
+                  textAlign: TextAlign.center, style: titleTheme),
 
-            const SizedBox(
-              height: 30,
-            ),
-
-            //name
-
-            textFormField(
-              controller: signUp.nameController,
-              lableText: 'الاسم الرباعي',
-              textType: TextInputType.name,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-
-            //email
-
-            textFormField(
-              controller: signUp.emailController,
-              lableText: 'البريد الالكتروني',
-              textType: TextInputType.emailAddress,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            //phone
-
-            textFormField(
-              controller: signUp.phoneController,
-              lableText: 'رقم الهاتف',
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            //password
-
-            TextFormField(
-              controller: signUp.passwordController,
-              decoration: InputDecoration(
-                label: const Text(
-                  'كلمة المرور',
-                ),
-                labelStyle: subTitleTheme,
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(pass ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      pass = !pass;
-                    });
-                  },
-                ),
+              const SizedBox(
+                height: 30,
               ),
-              obscureText: pass,
-              keyboardType: TextInputType.visiblePassword,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            textFormField(
-              controller: signUp.addressController,
-              lableText: 'العنوان',
-              textType: TextInputType.streetAddress,
-            ),
 
-            const SizedBox(
-              height: 50,
-            ),
+              //name
 
-            Obx(() => OutlinedButton(
-                  onPressed: () {
-                    signUp.SignUp(
-                      email: signUp.emailController.text,
-                      password: signUp.passwordController.text,
-                    );
-                    // Get.to(Home());
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade700,
-                    primary: Colors.white,
-                    fixedSize: const Size(320, 60),
-                    textStyle: titleTheme.copyWith(fontSize: 18),
+              textFormField(
+                controller: signUp.nameController,
+                lableText: 'الاسم الرباعي',
+                textType: TextInputType.name,
+                validate: (value) => signUp.validate(value),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+
+              //email
+
+              textFormField(
+                controller: signUp.emailController,
+                lableText: 'البريد الالكتروني',
+                textType: TextInputType.emailAddress,
+                validate: (value) => signUp.emailValidator(value),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              //phone
+
+              textFormField(
+                controller: signUp.phoneController,
+                lableText: 'رقم الهاتف',
+                validate: (value) => signUp.validateMobile(value),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              //password
+
+              TextFormField(
+                controller: signUp.passwordController,
+                decoration: InputDecoration(
+                  label: const Text(
+                    'كلمة المرور',
                   ),
-                  child: signUp.isLoading.value
-                      ? const CircularProgressIndicator()
-                      : const Text("انشاء الحساب"),
-                )),
-          ],
+                  labelStyle: subTitleTheme,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(signUp.isPass!
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed:() => 
+                      signUp.changePass()
+                    ,
+                  ),
+                ),
+                validator: ((value) => signUp.validatePassword(value)),
+                obscureText: signUp.isPass!,
+                keyboardType: TextInputType.visiblePassword,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              textFormField(
+                controller: signUp.addressController,
+                lableText: 'العنوان',
+                textType: TextInputType.streetAddress,
+                validate: (val) => signUp.validate(val),
+              ),
+
+              const SizedBox(
+                height: 50,
+              ),
+
+              Obx(() => OutlinedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        signUp.SignUp(
+                          email: signUp.emailController.text,
+                          password: signUp.passwordController.text,
+                        );
+                      }
+                      // Get.to(Home());
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.teal.shade700,
+                      primary: Colors.white,
+                      fixedSize: const Size(320, 60),
+                      textStyle: titleTheme.copyWith(fontSize: 18),
+                    ),
+                    child: signUp.isLoading.value
+                        ? const CircularProgressIndicator()
+                        : const Text("انشاء الحساب"),
+                  )),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:another_stepper/dto/stepper_data.dart';
 import 'package:charities/modules/constants/theme.dart';
 import 'package:charities/modules/ordersPage.dart';
 import 'package:charities/modules/searchpage.dart';
@@ -14,7 +15,7 @@ class BottomBarController extends GetxController {
   List<Widget> buildScreens() {
     return [
       const HomePage(),
-      const OrdersPage(),
+      const MyOrdersPage(),
       const SearchPage(),
       ProfilePage(),
     ];
@@ -59,6 +60,53 @@ class BottomBarController extends GetxController {
   void changeBottomNavBar(index) {
     currentIndex = index;
   }
+
+  List<StepperData> stepperData = [
+    StepperData(
+        title: StepperText("تجهيز الطلب",
+            textStyle: titleTheme.copyWith(fontSize: 16)),
+        subtitle: StepperText("طلبك تحت المعالجة للانطلاق ",
+            textStyle: subTitleTheme),
+        iconWidget: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(30))),
+          child: const Icon(Icons.check_circle, color: Colors.white),
+        )),
+    StepperData(
+        title:
+            StepperText("انطلاق", textStyle: titleTheme.copyWith(fontSize: 16)),
+        subtitle: StepperText(
+          "تم تجهيز طلبك وتسليمه لخدمة التوصيل",
+          textStyle: subTitleTheme,
+        ),
+        iconWidget: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          // child: const Icon(Icons.looks_two, color: Colors.white),
+        )),
+    StepperData(
+      title: StepperText("تأكيد استلام الطلب",
+          textStyle: titleTheme.copyWith(fontSize: 16)),
+      // subtitle: StepperText("تأكيد استلام الطلب "),
+      iconWidget: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.all(Radius.circular(30)),),
+        // child: const Icon(Icons.looks_3, color: Colors.white),
+      ),
+    ),
+    // StepperData(
+    //   title: StepperText("Delivered",
+    //       textStyle: const TextStyle(
+    //         color: Colors.grey,
+    //       )),
+    // ),
+  ];
 
   // showBottomSheetFunction(BuildContext context) {}
 }

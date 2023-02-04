@@ -4,12 +4,18 @@ import '../controller/SignUpController.dart';
 import '../modules/constants/theme.dart';
 
 class textFormField extends StatelessWidget {
-  textFormField({Key? key, this.controller, this.textType, this.lableText})
-      : super(key: key);
+  textFormField({
+    Key? key,
+    this.controller,
+    this.textType,
+    this.lableText,
+    this.validate
+  }) : super(key: key);
 
   TextEditingController? controller = TextEditingController();
   String? lableText;
   TextInputType? textType;
+  var validate;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class textFormField extends StatelessWidget {
         ),
       ),
       keyboardType: TextInputType.emailAddress,
+      validator: validate,
     );
   }
 }

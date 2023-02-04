@@ -10,9 +10,6 @@ import '../modules/homePage.dart';
 import '../models/user.dart';
 import '../services/doctorService.dart';
 
-
-
-
 class SignUpController extends GetxController {
   var auth = FirebaseAuth.instance;
   var emailController = TextEditingController();
@@ -22,25 +19,22 @@ class SignUpController extends GetxController {
   var addressController = TextEditingController();
   var imageController = TextEditingController();
   RxBool isLoading = false.obs;
+  bool? isPass = false;
 
   final CollectionReference _userCollectionRef =
       FirebaseFirestore.instance.collection("Doctors");
   Users? userData;
   final box = GetStorage();
 
-
-@override
+  @override
   void onInit() {
-  if (box.read('userId')!=null) {
+    if (box.read('userId') != null) {
       getUserdata(box.read('userId'));
     }
     super.onInit();
   }
 
-  
-  void SignUp(
-      {required String? email, required String? password}
-      ) async {
+  void SignUp({required String? email, required String? password}) async {
     try {
       isLoading.value = true;
       await auth
@@ -53,7 +47,7 @@ class SignUpController extends GetxController {
           addUserToFirestore(value.user?.uid);
         },
       );
-      Get.offAll(  Home());
+      Get.offAll(Home());
     } on FirebaseAuthException catch (error) {
       isLoading.value = true;
       String? title = error.code;
@@ -81,14 +75,14 @@ class SignUpController extends GetxController {
   void addUserToFirestore(String? userId) async {
     await FirestoreUsers()
         .addUserToFirestore(Users(
-            userId: userId,
-            email: emailController.text,
-            name: nameController.text,
-            password: passwordController.text,
-            phoneNumber: phoneController.text,
-            address: addressController.text,
-            // createdAt: DateTime.now(),
-            ))
+      userId: userId,
+      email: emailController.text,
+      name: nameController.text,
+      password: passwordController.text,
+      phoneNumber: phoneController.text,
+      address: addressController.text,
+      // createdAt: DateTime.now(),
+    ))
         .then((value) {
       getUserdata(userId!);
       box.write('userId', userId);
@@ -149,5 +143,16 @@ class SignUpController extends GetxController {
     } else {
       return null;
     }
+  }
+
+  String? validate(String? val) {
+    if (val!.isEmpty) {
+      return 'هذا الحقل مطلوب';
+    }
+    return null;
+  }
+
+  void changePass() {
+    isPass = !isPass!;
   }
 }

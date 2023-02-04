@@ -1,6 +1,8 @@
 import 'package:charities/models/charityModel.dart';
+import 'package:charities/modules/ordersPage.dart';
 import 'package:charities/widgets/serviceItem.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'constants/theme.dart';
 import '../widgets/charityItem.dart';
@@ -37,7 +39,9 @@ class ServicesPage extends StatelessWidget {
                           style: titleTheme.copyWith(color: Colors.white),
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.off(() => const MyOrdersPage());
+                            },
                             icon: const Icon(
                               Icons.shopping_cart,
                               color: Colors.white,

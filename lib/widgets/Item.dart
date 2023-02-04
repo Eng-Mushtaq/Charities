@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Item extends StatelessWidget {
-  const Item({super.key,this.prouct});
+  Item({super.key, this.prouct, this.title,this.onTap});
   final Products? prouct;
+  String? title;
+  void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,7 +23,9 @@ class Item extends StatelessWidget {
         ),
         child: Center(
           child: GestureDetector(
-            onTap: (() => Get.to(() => const OrderInfoPage())),
+            onTap:onTap==null?(() => Get.to(() => OrderInfoPage(
+                  product: prouct,
+                ))):null,
             child: ListTile(
               title: Text(prouct!.name!),
               // title: const Text('ثوب شبابي'),
@@ -30,10 +34,14 @@ class Item extends StatelessWidget {
                 prouct!.description!,
                 style: TextStyle(color: primaryColor),
               ),
-              trailing: ElevatedButton(
-                  onPressed: () {}, child: const Text('اطلب الان')),
+              trailing:title==null? ElevatedButton(
+                  onPressed: (() => Get.to(() => OrderInfoPage(
+                        product: prouct,
+                      ))),
+                  child: const Text('اطلب الان')): Text(title!),
               leading: Image.asset(
-                'assets/images/alber.png',
+                // 'assets/images/alber.png',
+                prouct!.imageUrl!,
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 10,

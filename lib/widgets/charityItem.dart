@@ -32,7 +32,8 @@ class CharityItem extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.asset(
-            'assets/images/alber.png',
+            // 'assets/images/alber.png',
+            charity!.logoUrl!,
             height: size.height * 0.1,
           ),
         ),

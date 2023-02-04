@@ -1,3 +1,4 @@
+import 'package:charities/controller/SignUpController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,17 +8,17 @@ import 'constants/theme.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
-
   @override
   State<StatefulWidget> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
   bool pass = true;
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final LoginController loginController = Get.find();
+    final SignUpController signUp = Get.find();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -45,90 +46,97 @@ class _LogInPageState extends State<LogInPage> {
         ),
         width: double.infinity,
         height: 550,
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-
-            //email
-            // Text("عنوان البريد الالكتروني",
-            //     textAlign: TextAlign.start, style: subTitleTheme),
-            const SizedBox(
-              height: 5,
-            ),
-            textFormField(
-              controller: loginController.emailController,
-              lableText: 'البريد الالكتروني',
-              textType: TextInputType.emailAddress,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            // //password
-            // Text("كلمة المرور",
-            //     textAlign: TextAlign.start, style: subTitleTheme),
-            const SizedBox(
-              height: 5,
-            ),
-            TextFormField(
-              controller: loginController.passwordController,
-              decoration: InputDecoration(
-                label: const Text('كلمة المرور'),
-                labelStyle: subTitleTheme,
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                suffixIcon: IconButton(
-                    icon: Icon(loginController.isPassword!
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () {
-                      loginController.passChange();
-                    }),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-              obscureText: loginController.isPassword!,
-              keyboardType: TextInputType.visiblePassword,
-            ),
 
-            const SizedBox(
-              height: 50,
-            ),
-            Obx(() => OutlinedButton(
-                  onPressed: () {
-                    loginController.signIn(
-                      loginController.emailController.text,
-                      loginController.passwordController.text,
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade700,
-                    primary: Colors.white,
-                    fixedSize: const Size(320, 60),
-                    textStyle: titleTheme.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+              //email
+              // Text("عنوان البريد الالكتروني",
+              //     textAlign: TextAlign.start, style: subTitleTheme),
+              const SizedBox(
+                height: 5,
+              ),
+              textFormField(
+                controller: loginController.emailController,
+                lableText: 'البريد الالكتروني',
+                textType: TextInputType.emailAddress,
+                validate: (value) => signUp.emailValidator(value),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              // //password
+              // Text("كلمة المرور",
+              //     textAlign: TextAlign.start, style: subTitleTheme),
+              const SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                controller: loginController.passwordController,
+                decoration: InputDecoration(
+                  label: const Text('كلمة المرور'),
+                  labelStyle: subTitleTheme,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
-                  child: loginController.isLoading.value
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Text('تسجيل الدخول'),
-                )),
+                  suffixIcon: IconButton(
+                      icon: Icon(loginController.isPassword!
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        loginController.passChange();
+                      }),
+                ),
+                obscureText: loginController.isPassword!,
+                keyboardType: TextInputType.visiblePassword,
+                validator: ((value) => signUp.validatePassword(value)),
+              ),
 
-            const SizedBox(
-              height: 20,
-            ),
+              const SizedBox(
+                height: 50,
+              ),
+              Obx(() => OutlinedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        loginController.signIn(
+                          loginController.emailController.text,
+                          loginController.passwordController.text,
+                        );
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.teal.shade700,
+                      primary: Colors.white,
+                      fixedSize: const Size(320, 60),
+                      textStyle: titleTheme.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    child: loginController.isLoading.value
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text('تسجيل الدخول'),
+                  )),
 
-            //forgetpass
-            TextButton(
-                onPressed: () {},
-                child: Text('هل نسيت كلمة المرور ؟', style: subTitleTheme))
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+
+              //forgetpass
+              TextButton(
+                  onPressed: () {},
+                  child: Text('هل نسيت كلمة المرور ؟', style: subTitleTheme))
+            ],
+          ),
         ),
       ),
     );

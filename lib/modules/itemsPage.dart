@@ -1,14 +1,17 @@
 import 'package:charities/models/charityModel.dart';
+import 'package:charities/modules/ordersPage.dart';
 import 'package:charities/widgets/serviceItem.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../widgets/Item.dart';
 import 'constants/theme.dart';
 import '../widgets/charityItem.dart';
 
 class ItemsPage extends StatelessWidget {
-  ItemsPage({super.key, this.itemsList});
+  ItemsPage({super.key, this.itemsList,this.title});
   List<Products>? itemsList;
+  String? title;
   // const Test({.key});
 
   @override
@@ -39,7 +42,9 @@ class ItemsPage extends StatelessWidget {
                           style: titleTheme.copyWith(color: Colors.white),
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.off(() => const MyOrdersPage());
+                            },
                             icon: const Icon(
                               Icons.shopping_cart,
                               color: Colors.white,

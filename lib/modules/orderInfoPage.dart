@@ -1,19 +1,28 @@
+import 'package:charities/controller/SignUpController.dart';
+import 'package:charities/models/charityModel.dart';
+import 'package:charities/modules/orderDetials.dart';
+import 'package:charities/modules/signup.dart';
 import 'package:charities/widgets/serviceItem.dart';
 import 'package:charities/widgets/textFormField.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controller/dataController.dart';
 import '../widgets/Item.dart';
 import 'constants/theme.dart';
 import '../widgets/charityItem.dart';
 
 class OrderInfoPage extends StatelessWidget {
-  const OrderInfoPage({super.key});
-
+  OrderInfoPage({super.key, this.product});
+  Products? product;
   // const Test({.key});
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final DataController controller = Get.find();
+    final SignUpController sign = Get.find();
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -68,42 +77,49 @@ class OrderInfoPage extends StatelessWidget {
                     height: size.height * 0.05,
                   ),
                   Form(
+                    key: _formKey,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Column(
                         children: [
                           textFormField(
                             lableText: 'الاسم',
+                            validate: (value) => sign.validate(value),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           textFormField(
                             lableText: 'الهاتف',
+                            validate: (val) => sign.validateMobile(val),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           textFormField(
                             lableText: 'عنوان الشارع',
+                            validate: (value) => sign.validate(value),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           textFormField(
                             lableText: 'المدينة',
+                            validate: (value) => sign.validate(value),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           textFormField(
                             lableText: 'الحي',
+                            validate: (value) => sign.validate(value),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           textFormField(
                             lableText: 'zipCode',
+                            validate: (value) => sign.validate(value),
                           ),
                           const SizedBox(
                             height: 15,
@@ -127,7 +143,15 @@ class OrderInfoPage extends StatelessWidget {
             vertical: 20,
           ),
           child: ElevatedButton(
-            onPressed: (() {}),
+            onPressed: (() {
+              if (_formKey.currentState!.validate()) {
+                controller.addOrder(product);
+                print('NNNNNNNNNNNNNNNNNN');
+                print(controller.orders.length);
+                print('NNNNNNNNNNNNNNNNNN');
+                Get.off(() => const OrderDetialsScreen());
+              }
+            }),
             child: const Text(
               'حفظ',
               style: TextStyle(fontSize: 20),
